@@ -1,13 +1,11 @@
 package cards;
 
-public class CardShoe {
+public class CardShoe extends CardDeck {
 
-    private CardDeck shoeDeck;
-    private CardDeck drawnCards;
-    private int remaining;
+    private CardDeck discardDeck;
 
     public CardShoe(int deckCount) {
-        shoeDeck = new CardDeck();
+        discardDeck = new CardDeck();
         for (int i = 0; i < deckCount; i++) {
             CardDeck deckMixer = new CardDeck(52);
 
@@ -15,12 +13,24 @@ public class CardShoe {
 
             PlayingCard drawnCard;
             while ((drawnCard = deckMixer.drawCard()) != null) {
-                shoeDeck.addCard(drawnCard);
-                remaining++;
+                addCard(drawnCard);
+
             }
 
         }
 
-        shoeDeck.shuffle(7);
+        shuffle(7);
     }
+
+    @Override
+    public PlayingCard drawCard() {
+        PlayingCard drawnCard = null;
+        while (drawnCard == null || new PlayingCard().equals(drawnCard)) {
+            drawnCard = super.drawCard();
+        }
+        discardDeck.addCard(drawnCard);
+        return drawnCard;
+
+    }
+
 }
